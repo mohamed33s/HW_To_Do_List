@@ -1,37 +1,36 @@
-import { Component } from "react";
 import "./App.css";
+import { Component } from "react";
 
 class App extends Component {
-  
-  addTask= () => {
-    let ul = document.getElementById("myUL");
-    let li = document.createElement("li");
-    let inputValue=document.getElementById("myInput").value;
-    li.appendChild(document.createTextNode(inputValue));
-    ul.appendChild(li);
-    document.getElementById("myInput").value = "";
+  state = {
+    Tasks: [],
   };
 
-  delTask= () => {
+  addTask = () => {
+    this.setState({
+      Tasks: this.state.Tasks.concat(document.getElementById("myInput").value),
+    });
+    if (this.state.Tasks !== "") {
+      document.getElementById("myInput").value = null;
+    }
+  };
+
+  delTask = () => {
     let ul = document.getElementById("myUL");
     ul.removeChild(ul.lastChild);
-
-  }
+  };
 
   render() {
+    let TaskList = this.state.Tasks.map((task) => {
+      return <li>{task}</li>;
+    });
     return (
       <div className="App">
-        <p>
-          <strong>To Do List</strong>
-        </p>
-        <input id="myInput" type="lable" />
-        <button id="toDo" onClick={this.addTask}>
-          Submit
-        </button>
-        <button id="toDo" onClick={this.delTask}>
-          Delete
-        </button>
-        <ul id="myUL"></ul>
+        <h1>To Do List</h1>
+        <input placeholder="Enter Your Task" id="myInput" type="text" />
+        <button onClick={this.addTask}>add</button>
+        <button onClick={this.delTask}>Delete</button>
+        <ul id="myUL">{TaskList}</ul>
       </div>
     );
   }
